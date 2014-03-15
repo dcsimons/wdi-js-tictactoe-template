@@ -78,9 +78,15 @@ game.TicTacToe.controller("GameController", ($scope) ->
         [2,4,6]
     ]
 
+    $scope.gameOver =
+      show: false
+      message: null
+      img_url: null
+
     $scope.selectTile = (tile) ->
       if tile.clicked
         alert("Position already selected.  Please select another tile.")
+        return
       else
         tile.clicked = true
         $scope.turns += 1
@@ -89,6 +95,7 @@ game.TicTacToe.controller("GameController", ($scope) ->
         if not $scope.isWin($scope.currentPlayer.tilesSelected)
           if not $scope.isTie()
             $scope.togglePlayer()
+            return
 
     $scope.togglePlayer = ->
       if $scope.currentPlayer is $scope.players[0]
@@ -105,14 +112,22 @@ game.TicTacToe.controller("GameController", ($scope) ->
     $scope.isWin = (playerTiles) ->
       for combo in $scope.winCombos
         if playerTiles.indexOf(combo[0]) >= 0 and playerTiles.indexOf(combo[1]) >= 0 and playerTiles.indexOf(combo[2]) >= 0
-          alert("Winner! Game Over")
+          $scope.gameOver.show = true
+          $scope.gameOver.message = $scope.currentPlayer.name + "wins!"
+          $scope.gameOver.img_url = $scope.currentPlayer.img_url
           return true
       return false
 
     $scope.isTie = ->
       if $scope.turns is 9
-        alert("Game ends in a tie.")
+        $scope.gameOver.show = true
+        $scope.gameOver.message = "Game ends in a tie!"
+        $scope.gameOver.img_url = "img/tied_knot.jpg"
         return true
+      return false
+
+    $scope.newGame = ->
+      window.location.href = window.location.href
 
     return
 

@@ -63,9 +63,14 @@ game.TicTacToe.controller("GameController", function($scope) {
   $scope.currentPlayer = $scope.players[0];
   $scope.turns = 0;
   $scope.winCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+  $scope.gameOver = {
+    show: false,
+    message: null,
+    img_url: null
+  };
   $scope.selectTile = function(tile) {
     if (tile.clicked) {
-      return alert("Position already selected.  Please select another tile.");
+      alert("Position already selected.  Please select another tile.");
     } else {
       tile.clicked = true;
       $scope.turns += 1;
@@ -73,7 +78,7 @@ game.TicTacToe.controller("GameController", function($scope) {
       $scope.currentPlayer.tilesSelected.push(tile.position);
       if (!$scope.isWin($scope.currentPlayer.tilesSelected)) {
         if (!$scope.isTie()) {
-          return $scope.togglePlayer();
+          $scope.togglePlayer();
         }
       }
     }
@@ -95,7 +100,9 @@ game.TicTacToe.controller("GameController", function($scope) {
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       combo = _ref[_i];
       if (playerTiles.indexOf(combo[0]) >= 0 && playerTiles.indexOf(combo[1]) >= 0 && playerTiles.indexOf(combo[2]) >= 0) {
-        alert("Winner! Game Over");
+        $scope.gameOver.show = true;
+        $scope.gameOver.message = $scope.currentPlayer.name + "wins!";
+        $scope.gameOver.img_url = $scope.currentPlayer.img_url;
         return true;
       }
     }
@@ -103,8 +110,14 @@ game.TicTacToe.controller("GameController", function($scope) {
   };
   $scope.isTie = function() {
     if ($scope.turns === 9) {
-      alert("Game ends in a tie.");
+      $scope.gameOver.show = true;
+      $scope.gameOver.message = "Game ends in a tie!";
+      $scope.gameOver.img_url = "img/tied_knot.jpg";
       return true;
     }
+    return false;
+  };
+  $scope.newGame = function() {
+    return window.location.href = window.location.href;
   };
 });
