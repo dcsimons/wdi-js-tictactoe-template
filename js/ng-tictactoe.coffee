@@ -122,7 +122,7 @@ game.TicTacToe.controller("GameController", ($scope) ->
       if $scope.turns is 9
         $scope.gameOver.show = true
         $scope.gameOver.message = "Game ends in a tie!"
-        $scope.gameOver.img_url = "img/tied_knot.jpg"
+        $scope.gameOver.img_url = "img/kaa.gif"
         return true
       return false
 
